@@ -1,2 +1,6 @@
 build
 node_modules
+.vercel
+.env
+yarn-error.log
+vercel.json
