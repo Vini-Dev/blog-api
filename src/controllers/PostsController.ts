@@ -17,7 +17,7 @@ const index = async (
   const { id } = request.params
 
   try {
-    const post = await Posts.findById(id)
+    const post = await Posts.findById(id).populate('created_by')
 
     if(!post)
       return response.status(404).send();;  
@@ -37,10 +37,10 @@ const list = async (
   response: Response
 ): Promise<Response> => {
   try {
-    const posts = await Posts.find()
+    const posts = await Posts.find().sort({ created_at: -1 }).populate('created_by')
     
     return response.status(200).json(posts);
-  } catch (error) {
+  } catch (error) {    
     return response.status(500).json(error);
   }
 };
@@ -51,7 +51,8 @@ const list = async (
 interface StoreRequestInterface extends Request {
   body: {
     session: {
-      id: string;
+      created_by: string;
+      updated_by: string;
     };
     description: string,
     image: string,
@@ -64,11 +65,13 @@ const store = async (
 ): Promise<Response> => {
   try {
     const { session, description, image  } = request.body
+    const { created_by, updated_by } = session
 
     const post = await Posts.create({
       description,
       image,
-      user: session.id
+      created_by,
+      updated_by,
     })
     
     return response.status(201).json(post);

@@ -23,7 +23,9 @@ export default async (req, res, next) => {
     req.body = {
       ...req.body,
       session: {
-        id: tokenDecoded.id
+        id: tokenDecoded.id,
+        created_by: tokenDecoded.id,
+        updated_by: tokenDecoded.id,
       },
     };
 

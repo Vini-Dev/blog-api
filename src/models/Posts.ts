@@ -25,7 +25,7 @@ const PostsSchema = new Schema({
   },
   created_by: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
   },
   updated_at: {
@@ -34,7 +34,7 @@ const PostsSchema = new Schema({
   },
   updated_by: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
   },
 })

@@ -3,6 +3,7 @@ import { Document, model, Schema } from 'mongoose';
 export interface UserDataInterface extends Document {
   name: string;
   user: string;
+  biography: string;
   password: string;
   created_at: string;
   updated_at: string;
@@ -18,6 +19,7 @@ const UsersSchema = new Schema({
     unique: true,
     required: true,
   },
+  biography: String,
   password: {
     type: String,
     required: true,

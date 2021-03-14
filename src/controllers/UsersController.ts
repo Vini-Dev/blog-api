@@ -62,7 +62,9 @@ interface StoreRequestInterface extends Request {
   body: {
     name: string,
     user: string,
+    biography?: string,
     password: string,
+    confirm_password: string,
   },
 }
 
@@ -71,13 +73,20 @@ const store = async (
   response: Response
 ): Promise<Response> => {
   try {
-    const { name, user, password } = request.body
+    const { name, user, biography = '', password, confirm_password } = request.body
+
+    if(password !== confirm_password) {
+      return response.status(422).json({ 
+        confirm_password: 'Password must be the same as confirm password' 
+      })
+    }
 
     const hash = await bcrypt.hash(password, 8)
 
     const newUser = await Users.create({
       name,
       user,
+      biography,
       password: hash,      
     })
 
@@ -101,6 +110,7 @@ const store = async (
       id: string;
     },    
     name: string,    
+    biography: string,    
   };
 }
 
@@ -109,10 +119,11 @@ const update = async (
   response: Response
 ): Promise<Response> => {
   try {
-    const { session, name } = request.body
+    const { session, name, biography } = request.body
 
     const user = await Users.findByIdAndUpdate(session.id, {
       name,      
+      biography,      
     }, { new: true })
     
     return response.status(200).json(user);
