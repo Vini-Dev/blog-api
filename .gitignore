@@ -4,5 +4,8 @@ node_modules
 .env
 yarn-error.log
 vercel.json
-tmp
 .vscode
+
+tmp/uploads/*.jpg
+tmp/uploads/*.jpeg
+tmp/uploads/*.png
